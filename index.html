@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="ICC Checklist" />
+  <title>Dayli ICC Method Checklist</title>
+
+  <!-- Google Fonts: Cormorant Garamond for display, DM Sans for body -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<!-- For browser tab icon -->
+<link rel="icon" href="app_icon.png" type="image/x-icon">
+
+<!-- For Apple devices (Add to Home Screen) -->
+<link rel="apple-touch-icon" href="app_icon.png">
+
+<!-- Optional: For Android Chrome -->
+<link rel="manifest" href="manifest.json">
+
+
+  <style>
+    /* =============================================
+       CSS CUSTOM PROPERTIES (color palette & tokens)
+       To change the color scheme, edit these variables.
+    ============================================= */
+    :root {
+      --text-primary:   #2e2e2e;   /* main checklist item text */
+      --accent:         #39243D;   /* borders, accents, rings */
+      --subtext:        #2e2e2e;   /* subtext / descriptions */
+      --bg:             url("./background.png");   /* page background */
+      --card-bg:        #ffffff;   /* card / section background */
+      --card-border:    #39243D;   /* subtle card borders */
+      --tag-bg:         #7ECBBA;   /* pill/tag background */
+      --check-done:     #ACE9D4;   /* checked checkbox fill */
+      --check-border:   #39243D;   /* unchecked checkbox border */
+      --reset-sm:       #39243D;   /* small reset button */
+      --reset-lg:       #39243D;   /* large reset button */
+      --buy-accent:     #39243D;   /* buy/bullish accent */
+      --sell-accent:    #8fb4c8;   /* sell/bearish accent */
+      --phase1-bg:      #A0D8C8;
+      --phase2-bg:      #F098B0; 
+      --phase3-bg:      #F8B070;
+      --phase4-bg:      #F8C0D0;
+      --walk-bg:        #f5e8e8;
+      --premarket-open: #ffe8e8;
+      --font-display:   'Cormorant Garamond', serif;
+      --font-body:      'DM Sans', sans-serif;
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: top center;
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
+    }
+
+    /* =============================================
+       STICKY HEADER — progress bar + small reset
+    ============================================= */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 2px solid var(--card-border);
+      padding: 10px 18px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .progress-bar-wrap {
+      flex: 1;
+      height: 6px;
+      background: var(--card-border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--buy-accent));
+      border-radius: 99px;
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+      width: 0%;
+    }
+
+    .progress-count {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+      min-width: 38px;
+      text-align: right;
+    }
+
+    /* Small reset button in header */
+    .btn-reset-sm {
+      background: none;
+      border: 1.5px solid var(--reset-sm);
+      color: var(--reset-sm);
+      border-radius: 99px;
+      padding: 4px 12px;
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .btn-reset-sm:active { background: var(--tag-bg); transform: scale(0.96); }
+
+    /* =============================================
+       MAIN CONTENT WRAPPER
+    ============================================= */
+    .content {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 14px 14px 32px;
+    }
+
+    /* =============================================
+       PAGE TITLE
+    ============================================= */
+    .page-title {
+      text-align: center;
+      margin-bottom: 16px;
+      padding-top: 4px;
+    }
+
+    .page-title h1 {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+
+    .page-title h1 em {
+      font-style: italic;
+      color: var(--buy-accent);
+    }
+
+    .page-title .subtitle {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    .page-title .subtitle:first-of-type {
+      color: #39243D;
+    }
+
+    .page-title .subtitle:last-child {
+      font-size: 9px; 
+    } 
+
+
+    /* =============================================
+       PREMARKET CHECK CARD
+    ============================================= */
+    .premarket-card {
+      background: var(--card-bg);
+      border: 2px solid var(--accent);
+      border-radius: 18px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+      box-shadow: 0 2px 12px rgba(101,158,165,0.08);
+    }
+
+    /* Header row of the premarket card (always visible) */
+    .premarket-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+      /* Tap highlight off */
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .premarket-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .premarket-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .premarket-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* Status badge: PENDING / PASS / FAIL */
+    .premarket-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 99px;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      background: var(--premarket-open);
+      transition: all 0.3s;
+    }
+    .premarket-badge.pass {
+      background: #d5ede8;
+      border-color: #5baa96;
+      color: #2a7a65;
+    }
+    .premarket-badge.fail {
+      background: #f5e8e8;
+      border-color: #de0826;
+      color: #de0826;
+    }
+
+    /* Chevron toggle icon */
+    .chevron {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+    .chevron.open { transform: rotate(180deg); }
+
+    /* Collapsible body */
+    .premarket-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .premarket-body.open {
+      max-height: 900px; /* large enough to not clip */
+    }
+
+    .premarket-inner {
+      padding: 0 16px 14px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    /* Individual premarket question rows */
+    .pm-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--card-border);
+      gap: 12px;
+    }
+    .pm-row:last-of-type { border-bottom: none; }
+
+    .pm-num {
+      font-family: var(--font-display);
+      font-size: 17px;
+      color: var(--accent);
+      min-width: 18px;
+      padding-top: 1px;
+    }
+
+    .pm-question {
+      flex: 1;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .pm-question .pm-sub {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--subtext);
+      display: block;
+      margin-top: 2px;
+      opacity: 0.75;
+    }
+
+    /* Yes/No button pair */
+    .pm-buttons {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+      align-items: center;
+    }
+
+    .pm-btn {
+      background: none;
+      border: 1.5px solid var(--check-border);
+      color: var(--text-primary);
+      border-radius: 99px;
+      padding: 5px 14px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Number input for "Max trades" question */
+    .pm-input {
+      background: none;
+      border: 1.5px solid var(--check-border);
+      color: var(--text-primary);
+      border-radius: 99px;
+      padding: 5px 0;
+      width: 52px;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 16px; /* must be 16px+ to prevent iOS auto-zoom */
+      font-weight: 500;
+      outline: none;
+    }
+    .pm-input:focus { border-color: var(--accent); }
+
+    /* Selected states */
+    .pm-btn.selected-yes {
+      background: #d5ede8;
+      border-color: #5baa96;
+      color: #2a7a65;
+    }
+    .pm-btn.selected-no {
+      background: #f5e8e8;
+      border-color: #de0826;
+      color: #de0826;
+    }
+
+  
+
+    /* Session rule box inside premarket */
+    .pm-rule-box {
+      background: var(--premarket-open);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-top: 6px;
+    }
+    .pm-rule-box .rule-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--subtext);
+      margin-bottom: 4px;
+    }
+    .pm-rule-box p {
+      font-size: 12px;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    .pm-rule-box strong { color: var(--subtext); }
+
+    /* Bottom collapse button inside premarket body */
+    .pm-collapse-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 12px;
+      background: none;
+      border: 1.5px solid var(--card-border);
+      border-radius: 99px;
+      padding: 7px 18px;
+      color: var(--accent);
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      width: 100%;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.2s;
+    }
+    .pm-collapse-btn:active { background: var(--tag-bg); }
+    .pm-collapse-btn svg { width: 14px; height: 14px; }
+
+    /* =============================================
+       SETUP TYPE — two separate standalone buttons
+       Active highlight matches the Pending badge style
+    ============================================= */
+    .setup-toggle {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 10px 0;
+      border: 2px solid var(--card-border);
+      border-radius: 14px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.22s;
+      background: var(--card-bg);
+      color: var(--accent);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .toggle-btn.active-buy,
+    .toggle-btn.active-sell {
+      background: var(--premarket-open);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 2px 8px rgba(101,158,165,0.18);
+    }
+
+    /* =============================================
+       SECTION CARDS (phases)
+    ============================================= */
+    .section-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 18px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(101,158,165,0.05);
+    }
+
+    /* Collapsible body wrapper for section-cards (phase 1-4) */
+    .section-body {
+      max-height: 4000px;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .section-body.collapsed {
+      max-height: 0;
+    }
+
+    /* Section header strip */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      padding: 12px 16px;
+    }
+
+    .section-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .section-header-text { flex: 1; }
+
+    .section-phase-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: inherit;
+      opacity: 0.7;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    .section-tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    /* Phase color themes */
+    .phase-1 .section-header { background: var(--phase1-bg); color: #39243D; }
+    .phase-1 .section-num    { background: #39243D; }
+    .phase-1 .section-tag    { background: #39243D; color: #ffffff; }
+
+    .phase-2 .section-header { background: var(--phase2-bg); color: #39243D; }
+    .phase-2 .section-num    { background: #39243D; }
+    .phase-2 .section-tag    { background: #39243D; color: #ffffff; }
+
+    .phase-3 .section-header { background: var(--phase3-bg); color: #39243D; }
+    .phase-3 .section-num    { background: #39243D; }
+    .phase-3 .section-tag    { background: #39243D; color: #ffffff; }
+
+    .phase-4 .section-header { background: var(--phase4-bg); color: #39243D; }
+    .phase-4 .section-num    { background: #39243D; }
+    .phase-4 .section-tag    { background: #39243D; color: #ffffff; }
+
+  
+
+    /* =============================================
+       CHECKLIST ITEMS
+    ============================================= */
+    .items-list {
+      padding: 6px 0;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+    .checklist-item:active { background: var(--tag-bg); }
+    .checklist-item.checked { opacity: 0.6; }
+
+    /* Custom checkbox circle */
+    .custom-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--check-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: all 0.2s;
+      background: #fff;
+    }
+    .checklist-item.checked .custom-checkbox {
+      background: var(--check-done);
+      border-color: var(--check-done);
+    }
+    .custom-checkbox svg {
+      width: 12px;
+      height: 12px;
+      color: #fff;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .checklist-item.checked .custom-checkbox svg { opacity: 1; }
+
+    .item-content { flex: 1; }
+
+    /* Tag pills next to item titles */
+    .item-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .item-tag {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 99px;
+    }
+
+    /* Tag color variants */
+    .tag-tf    { background: #A0D8C8; color: #014D4E; }
+    .tag-htf   { background: #A0D8C8; color: #014D4E; }
+    .tag-key   { background: #A0D8C8; color: #014D4E; }
+    .tag-target{ background: #A0D8C8; color: #014D4E; }
+    .tag-1m    { background: #F098B0; color: #572649; }
+    .phase-specific { background: #F8B070; color: #7a5020; }
+    .phase-specific-2 { background: #F8C0D0; color: #6d2f5c; }
+    .tag-bull  { background: #F098B0; color: #572649; }
+    .tag-bear  { background: #F098B0; color: #572649; }
+    .tag-inv   { background: #39243D; color: #ffffff; }
+    .tag-lim   { background: #F8C0D0; color: #a3368c; }
+    .tag-nofill{ background: #39243D; color: #ffffff; }
+    .tag-sl    { background: #F8C0D0; color: #6d2f5c; }
+    .tag-tp    { background: #F8C0D0; color: #6d2f5c; }
+    .tag-tp1   { background: #F8C0D0; color: #6d2f5c; }
+    .tag-in    { background: #F8C0D0; color: #6d2f5c; }
+    .tag-ltf   { background: #F8B070; color: #7a5020; }
+    .tag-donothing { background: #F8B070; color: #7a5020; }
+
+    .item-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.35;
+    }
+    .checklist-item.checked .item-title {
+      text-decoration: line-through;
+      color: var(--accent);
+    }
+
+    .item-desc {
+      font-size: 11.5px;
+      font-weight: 400;
+      color: var(--subtext);
+      line-height: 1.5;
+      margin-top: 2px;
+      opacity: 0.85;
+    }
+
+    
+
+    /* =============================================
+       INFO NOTE — replaces alert banners
+       Same warm cream style as golden-rule-final
+    ============================================= */
+    .info-note {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.5;
+      text-align: center;
+      background: #fff0f0;
+      color: #2e2e2e;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin: 2px 16px 12px;
+    }
+
+    
+
+  
+
+    /* =============================================
+       LARGE RESET BUTTON (bottom)
+    ============================================= */
+    .btn-reset-lg {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--accent), var(--buy-accent));
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 6px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(101,158,165,0.25);
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-reset-lg:active { opacity: 0.85; transform: scale(0.98); }
+
+    /* =============================================
+       SETUP TYPE LABEL BADGE (Buy/Sell indicator)
+    ============================================= */
+    .setup-mode-indicator {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      opacity: 0.8;
+    }
+
+    /* =============================================
+       HIDDEN UTILITY
+    ============================================= */
+    .hidden { display: none !important; }
+  </style>
+
+</head>
+<body>
+
+  <!-- =============================================
+       STICKY HEADER: progress bar + small reset
+       Hidden until progress starts (no space reserved)
+  ============================================= -->
+
+  <div class="sticky-header" id="stickyHeader">
+    <span class="progress-label">Progress</span>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <span class="progress-count" id="progressCount">0 / 0</span>
+    <button class="btn-reset-sm" onclick="confirmReset()">Reset</button>
+  </div>
+
+  <!-- =============================================
+       MAIN CONTENT
+  ============================================= -->
+
+  <div class="content">
+
+
+<div class="page-title" style="padding-top:18px; text-align:center;">
+  <h1 style="margin:0; text-align:center;">
+    <img src="./Logo.png" alt="Dayli ICC Method Checklist"
+         style="width:350px; display:block; margin:0 auto;">
+  </h1>
+  <p class="subtitle" style="margin-bottom:8px;">The Dayli ICC Method</p>
+  <div style="width:48px;height:2px;background:var(--accent);border-radius:2px;margin:10px auto 10px;opacity:0.5;"></div>
+  <p class="subtitle" style="margin-bottom:8px;">Indication · Correction · Continuation</p>
+</div>
+
+<!-- =============================================
+     BUY / SELL SETUP TOGGLE
+     Switching toggles which set of tagged items shows.
+     The checklist state is shared (same items, direction
+     matters for tag labels only). You can separate state
+     if you want fully independent buy/sell checklists.
+============================================= -->
+<div class="setup-toggle">
+  <button class="toggle-btn active-buy" id="toggleBuy" onclick="setSetup('buy')">🫧 Buy Setup</button>
+  <button class="toggle-btn" id="toggleSell" onclick="setSetup('sell')">🫧 Sell Setup</button>
+</div>
+
+<!-- Small label echoing current mode -->
+<div class="setup-mode-indicator" id="setupModeLabel">Bullish · Long Setup</div>
+
+<!-- =============================================
+     PHASE 1 — HTF Bias & Setup Conditions
+============================================= -->
+<div class="section-card phase-1">
+  <div class="section-header" id="header-phase-1" onclick="toggleSection('phase-1')">
+    <div class="section-num">1</div>
+    <div class="section-header-text">
+      <div class="section-phase-label">First Thing When You Open a Chart</div>
+      <div class="section-title">HTF Bias & Setup Conditions</div>
+    </div>
+    <svg class="chevron open" id="chevron-phase-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </div>
+  <div class="section-body" id="body-phase-1">
+  <div class="items-list">
+
+    <div class="checklist-item" id="item-1" onclick="toggleItem('item-1')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags">
+          <span class="item-tag tag-tf">1H</span>
+          <span class="item-tag tag-htf">4H</span>
+        </div>
+        <div class="item-title">Check your bias</div>
+        <div class="item-desc" id="desc-1">Are we in an uptrend or downtrend? Higher highs and higher lows (bullish) or lower highs and lower lows (bearish)?</div>
+      </div>
+    </div>
+
+    <!-- Bias gate: yes/no question instead of checkbox -->
+    <div class="checklist-item inv-yesno" style="cursor:default;">
+      <div class="item-content" style="flex:1;">
+        <div class="item-tags"><span class="item-tag tag-inv">Check</span></div>
+        <div class="item-title">Is there clear 1H or 4H bias?</div>
+        <div class="item-desc">If bias isn't clear, don't force a setup. Wait for clarity.</div>
+      </div>
+      <div class="pm-buttons" style="flex-shrink:0;align-self:center;">
+        <button class="pm-btn" id="bias-yes" onclick="gateAnswer('bias','yes')">Yes</button>
+        <button class="pm-btn" id="bias-no"  onclick="gateAnswer('bias','no')">No</button>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-2" onclick="toggleItem('item-2')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags">
+          <span class="item-tag tag-htf">4H</span>
+        </div>
+        <div class="item-title">Identify your swing high and swing low levels</div>
+        <div class="item-desc">Mark the key swing highs and swing lows on the 4H timeframe. These are your structural reference points.</div>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-3" onclick="toggleItem('item-3')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags">
+          <span class="item-tag tag-tf">1H</span>
+        </div>
+        <div class="item-title">Mark your support and resistance levels</div>
+        <div class="item-desc">Identify key support and resistance on the 1H timeframe. Where has price reacted before?</div>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-4" onclick="toggleItem('item-4')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags">
+          <span class="item-tag tag-tf">1H</span>
+          <span class="item-tag tag-htf">4H</span>
+        </div>
+        <div class="item-title">Identify the most recent swing highs and swing lows</div>
+        <div class="item-desc">These can be marked on both 1H and 4H. These are the levels you are actively watching for a reaction.</div>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-5" onclick="toggleItem('item-5')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags">
+          <span class="item-tag tag-key">Key Level</span>
+        </div>
+        <div class="item-title">Mark your Pre-Indication Level</div>
+        <div class="item-desc">The swing level that price has NOT broken or retested yet. This is the level you are watching for your indication. Mark it in advance.</div>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-6" onclick="toggleItem('item-6')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags">
+          <span class="item-tag tag-target">Target</span>
+        </div>
+        <div class="item-title">Identify where price is likely headed</div>
+        <!-- Direction-aware description: shows buy or sell version -->
+        <div class="item-desc" id="desc-6">Previous highs, equal highs, or liquidity pools above (bullish target).</div>
+      </div>
+    </div>
+
+  </div>
+    <button class="pm-collapse-btn" onclick="toggleSection('phase-1')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+      Collapse
+    </button>
+  </div>
+</div>
+<!-- / Phase 1 -->
+
+<!-- =============================================
+     PHASE 2 — Indication (Drop to 1M)
+============================================= -->
+<div class="section-card phase-2">
+  <div class="section-header" id="header-phase-2" onclick="toggleSection('phase-2')">
+    <div class="section-num">2</div>
+    <div class="section-header-text">
+      <div class="section-phase-label">Phase 1 · ICC</div>
+      <div class="section-title">Indication</div>
+    </div>
+    <span class="section-tag">Drop to 1M</span>
+    <svg class="chevron open" id="chevron-phase-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </div>
+  <div class="section-body" id="body-phase-2">
+  <div class="items-list">
+
+    <div class="checklist-item" id="item-7" onclick="toggleItem('item-7')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-1m">1M</span></div>
+        <div class="item-title">A 1M candle CLOSES past the Pre-Indication Level</div>
+        <div class="item-desc">Body close only. A wick through does NOT count. Must be a full candle close.</div>
+      </div>
+    </div>
+
+    <!-- Buy-only item -->
+    <div class="checklist-item buy-only" id="item-8" onclick="toggleItem('item-8')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-bull">Bullish</span></div>
+        <div class="item-title">Candle closes ABOVE swing high</div>
+        <div class="item-desc">The Pre-Indication Level is now the Defended Swing. Direction is confirmed up.</div>
+      </div>
+    </div>
+
+    <!-- Sell-only item -->
+    <div class="checklist-item sell-only hidden" id="item-8s" onclick="toggleItem('item-8s')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-bear">Bearish</span></div>
+        <div class="item-title">Candle closes BELOW swing low</div>
+        <div class="item-desc">The Pre-Indication Level is now the Defended Swing. Direction is confirmed down.</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="info-note">
+    Do NOT enter here. Wait for the correction. The indication is just confirmation of direction.
+  </div>
+    <button class="pm-collapse-btn" onclick="toggleSection('phase-2')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+      Collapse
+    </button>
+  </div>
+</div>
+<!-- / Phase 2 -->
+
+<!-- =============================================
+     PHASE 3 — Correction (Watch. Don't touch.)
+============================================= -->
+<div class="section-card phase-3">
+  <div class="section-header" id="header-phase-3" onclick="toggleSection('phase-3')">
+    <div class="section-num">3</div>
+    <div class="section-header-text">
+      <div class="section-phase-label">Phase 2 · ICC</div>
+      <div class="section-title">Correction</div>
+    </div>
+    <span class="section-tag">Watch. Don't touch.</span>
+    <svg class="chevron open" id="chevron-phase-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </div>
+  <div class="section-body" id="body-phase-3">
+  <div class="items-list">
+
+    <div class="checklist-item" id="item-9" onclick="toggleItem('item-9')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-donothing">Do Nothing</span></div>
+        <div class="item-title">Price pulls back against the trend</div>
+        <div class="item-desc">This is normal. Do nothing. The market is refueling (the private jet is landing).</div>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-10" onclick="toggleItem('item-10')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-1m phase-specific">1M</span></div>
+        <div class="item-title">Observe the pullback</div>
+        <div class="item-desc" id="desc-10">Price moves against the trend back through the Pre-Indication Level. Bullish: sellers temporarily step in. Let it happen.</div>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-11" onclick="toggleItem('item-11')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-ltf">LTF Watch</span></div>
+        <div class="item-title">Watch for internal structure shift</div>
+        <div class="item-desc">The correction is losing steam and price is starting to shift back in the direction of the trend. This is your signal that the pullback may be ending.</div>
+      </div>
+    </div>
+
+    <!-- Invalidation: yes/no question instead of checkbox -->
+    <div class="checklist-item inv-yesno" style="cursor:default;">
+      <div class="item-content" style="flex:1;">
+        <div class="item-tags"><span class="item-tag tag-inv">Invalidation</span></div>
+        <div class="item-title">Did structure break the RIGHT way?</div>
+        <div class="item-desc" id="desc-12">If price breaks below a key swing (bullish setup) = correction failed. Walk away. Wait for new setup.</div>
+      </div>
+      <div class="pm-buttons" style="flex-shrink:0;align-self:center;">
+        <button class="pm-btn" id="inv-yes" onclick="invAnswer('yes')">Yes</button>
+        <button class="pm-btn" id="inv-no"  onclick="invAnswer('no')">No</button>
+      </div>
+    </div>
+
+    <!-- Retest gate: yes/no question instead of checkbox -->
+    <div class="checklist-item inv-yesno" style="cursor:default;">
+      <div class="item-content" style="flex:1;">
+        <div class="item-tags"><span class="item-tag tag-inv">Check</span></div>
+        <div class="item-title">Did you wait for the retest before entering?</div>
+        <div class="item-desc">The correction is a watch-only phase. Entering during the pullback, before the retest and close, is not a valid entry.</div>
+      </div>
+      <div class="pm-buttons" style="flex-shrink:0;align-self:center;">
+        <button class="pm-btn" id="retest-yes" onclick="gateAnswer('retest','yes')">Yes</button>
+        <button class="pm-btn" id="retest-no"  onclick="gateAnswer('retest','no')">No</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="info-note">
+    The correction is not complete at the pullback. It is complete at the RETEST + CLOSE.
+  </div>
+    <button class="pm-collapse-btn" onclick="toggleSection('phase-3')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+      Collapse
+    </button>
+  </div>
+</div>
+<!-- / Phase 3 -->
+
+<!-- =============================================
+     PHASE 4 — Continuation Entry
+============================================= -->
+<div class="section-card phase-4">
+  <div class="section-header" id="header-phase-4" onclick="toggleSection('phase-4')">
+    <div class="section-num">4</div>
+    <div class="section-header-text">
+      <div class="section-phase-label">Phase 3 · ICC</div>
+      <div class="section-title">Continuation Entry</div>
+    </div>
+    <span class="section-tag">Execute with precision</span>
+    <svg class="chevron open" id="chevron-phase-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </div>
+  <div class="section-body" id="body-phase-4">
+  <div class="items-list">
+
+    <div class="checklist-item" id="item-13" onclick="toggleItem('item-13')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-1m phase-specific-2">1M Close</span></div>
+        <div class="item-title">Candle CLOSES back through the swing level</div>
+        <div class="item-desc" id="desc-13">Bullish: close back ABOVE the level. Bearish: close back BELOW. Correction is complete. Trend wants to continue.</div>
+      </div>
+    </div>
+
+    <!-- Closed-through-level gate: yes/no question instead of checkbox -->
+    <div class="checklist-item inv-yesno" style="cursor:default;">
+      <div class="item-content" style="flex:1;">
+        <div class="item-tags"><span class="item-tag tag-inv">Check</span></div>
+        <div class="item-title">Did the candle close through the level (not just the wick)?</div>
+        <div class="item-desc">Body close only. A wick through the level does not confirm the entry.</div>
+      </div>
+      <div class="pm-buttons" style="flex-shrink:0;align-self:center;">
+        <button class="pm-btn" id="closed-yes" onclick="gateAnswer('closed','yes')">Yes</button>
+        <button class="pm-btn" id="closed-no"  onclick="gateAnswer('closed','no')">No</button>
+      </div>
+    </div>
+
+    <!-- Calm/clear gate: yes/no question instead of checkbox -->
+    <div class="checklist-item inv-yesno" style="cursor:default;">
+      <div class="item-content" style="flex:1;">
+        <div class="item-tags"><span class="item-tag tag-inv">Check</span></div>
+        <div class="item-title">Do you feel calm and clear before entering?</div>
+        <div class="item-desc">If you feel rushed or uncertain, that's a sign to slow down, not a reason to enter.</div>
+      </div>
+      <div class="pm-buttons" style="flex-shrink:0;align-self:center;">
+        <button class="pm-btn" id="calm-yes" onclick="gateAnswer('calm','yes')">Yes</button>
+        <button class="pm-btn" id="calm-no"  onclick="gateAnswer('calm','no')">No</button>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-14" onclick="toggleItem('item-14')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-lim">Limit Order</span></div>
+        <!-- Direction-aware title -->
+        <div class="item-title" id="title-14">Place Buy Limit at the defended swing level</div>
+        <div class="item-desc">After the confirmation close, limit order at the defended swing level. Let price come to me.</div>
+      </div>
+    </div>
+
+    <!-- Filled gate: yes/no question instead of static statement -->
+    <div class="checklist-item inv-yesno" style="cursor:default;">
+      <div class="item-content" style="flex:1;">
+        <div class="item-tags"><span class="item-tag tag-nofill">No Fill</span></div>
+        <div class="item-title">Did your limit order get filled?</div>
+        <div class="item-desc">If it wasn't hit and price left, don't chase with a market order. Mark it as a missed trade and move on.</div>
+      </div>
+      <div class="pm-buttons" style="flex-shrink:0;align-self:center;">
+        <button class="pm-btn" id="filled-yes" onclick="gateAnswer('filled','yes')">Yes</button>
+        <button class="pm-btn" id="filled-no"  onclick="gateAnswer('filled','no')">No</button>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-16" onclick="toggleItem('item-16')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-sl">Stop Loss</span></div>
+        <div class="item-title">Set stop loss immediately</div>
+        <div class="item-desc" id="desc-16">Bullish: below the higher low of the correction. Bearish: above the lower high. This is your invalidation level.</div>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-17" onclick="toggleItem('item-17')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-tp">Take Profit</span></div>
+        <div class="item-title">Set TP1 at 1:1 (partials) + TP2 at structure</div>
+        <div class="item-desc">Target liquidity pools, previous highs/lows, or external structure. Shoot for 1:2 minimum on MNQ.</div>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-18" onclick="toggleItem('item-18')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-tp1">TP1 Hit</span></div>
+        <div class="item-title">Take partials + move SL to breakeven</div>
+        <div class="item-desc">Let the rest run to structure. Do not close the whole trade out of fear at TP1.</div>
+      </div>
+    </div>
+
+    <div class="checklist-item" id="item-19" onclick="toggleItem('item-19')">
+      <div class="custom-checkbox">
+        <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg>
+      </div>
+      <div class="item-content">
+        <div class="item-tags"><span class="item-tag tag-in">In Trade</span></div>
+        <div class="item-title">Let it play out. Do not interfere.</div>
+        <div class="item-desc">No random stop moves. No emotional closes. You already planned this. Trust the structure.</div>
+      </div>
+    </div>
+
+  </div>
+    <button class="pm-collapse-btn" onclick="toggleSection('phase-4')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+      Collapse
+    </button>
+  </div>
+</div>
+<!-- / Phase 4 -->
+
+
+
+
+
+
+<!-- =============================================
+     LARGE RESET BUTTON (bottom)
+============================================= -->
+<button class="btn-reset-lg" onclick="confirmReset()">↺ Reset Checklist</button>
+
+
+  </div>
+  <!-- / .content -->
+
+  <!-- =============================================
+       JAVASCRIPT — State, Storage, Logic
+  ============================================= -->
+
+  <script>
+    // =============================================
+    // STORAGE KEYS
+    // All data is stored in localStorage so it
+    // persists when the PWA is closed and reopened.
+    // =============================================
+    const KEYS = {
+      checklist:   'icc_checklist_v1',     // main checklist items
+      setup:       'icc_setup_v1',         // 'buy' or 'sell'
+    };
+
+    // =============================================
+    // MAIN CHECKLIST ITEMS
+    // These are the IDs of all toggleable items
+    // in the main checklist (not walk-away or premarket)
+    // =============================================
+    const MAIN_ITEMS = [
+      'item-1','item-2','item-3','item-4','item-5','item-6',
+      'item-7','item-8','item-8s',
+      'item-9','item-10','item-11',
+      'item-13','item-14','item-16','item-17','item-18','item-19'
+    ];
+
+    // Walk-away items are now static (no interaction), excluded from progress
+    const WALK_ITEMS = [];
+
+    // Items that are direction-specific
+    // 'buy-only' items are hidden in sell mode; 'sell-only' hidden in buy mode
+    // item-8 is buy-only, item-8s is sell-only (different checklist item)
+    const BUY_ONLY_IDS  = ['item-8'];
+    const SELL_ONLY_IDS = ['item-8s'];
+
+    // =============================================
+    // STATE — loaded from localStorage on init
+    // =============================================
+    let state = {
+      checklist:  {},
+      walkAway:   {},
+      setup:      'buy',
+      inv:        { buy: null, sell: null }, // invalidation yes/no per mode
+      gates:      { // additional yes/no gate checks per mode
+        buy:  { bias: null, retest: null, closed: null, calm: null, filled: null },
+        sell: { bias: null, retest: null, closed: null, calm: null, filled: null },
+      },
+      sectionsOpen: { 'phase-1': true, 'phase-2': true, 'phase-3': true, 'phase-4': true },
+    };
+
+    // =============================================
+    // INIT — runs on page load
+    // =============================================
+    function init() {
+      loadState();
+      applySetup(state.setup, false);
+      renderAll();
+    }
+
+    // =============================================
+    // LOAD STATE from localStorage
+    // =============================================
+    function loadState() {
+      try {
+        const cl = localStorage.getItem(KEYS.checklist);
+        if (cl) state.checklist = JSON.parse(cl);
+
+        const su = localStorage.getItem(KEYS.setup);
+        if (su) state.setup = su;
+
+        const inv = localStorage.getItem('icc_inv_v1');
+        if (inv) state.inv = JSON.parse(inv);
+
+        const gates = localStorage.getItem('icc_gates_v1');
+        if (gates) state.gates = JSON.parse(gates);
+
+        const sections = localStorage.getItem('icc_sections_open_v1');
+        if (sections) state.sectionsOpen = JSON.parse(sections);
+      } catch (e) {
+        console.warn('Error loading state:', e);
+      }
+    }
+
+    // =============================================
+    // SAVE STATE to localStorage
+    // =============================================
+    function saveChecklist() {
+      localStorage.setItem(KEYS.checklist, JSON.stringify(state.checklist));
+    }
+    function saveSetup() {
+      localStorage.setItem(KEYS.setup, state.setup);
+    }
+    // =============================================
+    // RENDER ALL UI from state
+    // =============================================
+    function renderAll() {
+      renderChecklist();
+      renderWalkAway();
+      renderProgress();
+      renderSetupToggle();
+      renderInv();
+      renderGates();
+      renderSections();
+    }
+
+    // Render main checklist item checked states for CURRENT mode
+    function renderChecklist() {
+      MAIN_ITEMS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const key = state.setup + '_' + id;
+        if (state.checklist[key]) {
+          el.classList.add('checked');
+        } else {
+          el.classList.remove('checked');
+        }
+      });
+    }
+
+    // Render walk-away checked states
+    function renderWalkAway() {
+      WALK_ITEMS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (state.checklist[id]) {
+          el.classList.add('checked');
+        } else {
+          el.classList.remove('checked');
+        }
+      });
+    }
+
+    // Render progress bar and count — scoped to current setup mode
+    function renderProgress() {
+      let total = 0;
+      let done  = 0;
+      MAIN_ITEMS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el || el.classList.contains('hidden')) return;
+        total++;
+        const key = state.setup + '_' + id;
+        if (state.checklist[key]) done++;
+      });
+
+      // Invalidation yes/no counts as 1 item toward progress
+      // It counts as "done" whether answered Yes or No (any answer = acknowledged)
+      total++;
+      if (state.inv[state.setup] !== null) done++;
+
+      // Gate checks (bias/retest/closed/calm) — any answer counts as acknowledged
+      GATE_IDS.forEach(g => {
+        total++;
+        if (state.gates[state.setup][g] !== null) done++;
+      });
+
+      const pct = total > 0 ? (done / total) * 100 : 0;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressCount').textContent = `${done} / ${total}`;
+
+      // Only show the sticky header once at least one item is checked
+      const header = document.getElementById('stickyHeader');
+      if (done > 0) {
+        header.classList.add('visible');
+      } else {
+        header.classList.remove('visible');
+      }
+    }
+
+    // Render buy/sell toggle active states
+    function renderSetupToggle() {
+      const buyBtn  = document.getElementById('toggleBuy');
+      const sellBtn = document.getElementById('toggleSell');
+      const label   = document.getElementById('setupModeLabel');
+      if (state.setup === 'buy') {
+        buyBtn.className  = 'toggle-btn active-buy';
+        sellBtn.className = 'toggle-btn';
+        label.textContent = 'Bullish · Long Setup';
+      } else {
+        buyBtn.className  = 'toggle-btn';
+        sellBtn.className = 'toggle-btn active-sell';
+        label.textContent = 'Bearish · Short Setup';
+      }
+    }
+
+    // =============================================
+    // TOGGLE A CHECKLIST ITEM
+    // State key is namespaced by setup mode so
+    // buy and sell have fully independent progress.
+    // =============================================
+    function toggleItem(id) {
+      const key = state.setup + '_' + id;
+      state.checklist[key] = !state.checklist[key];
+      saveChecklist();
+      renderChecklist();
+      renderProgress();
+    }
+
+    // Toggle walk-away items (shared across both modes — not namespaced)
+    function toggleWalk(id) {
+      state.checklist[id] = !state.checklist[id];
+      saveChecklist();
+      renderWalkAway();
+      renderProgress();
+    }
+
+    // =============================================
+    // SETUP MODE (Buy / Sell)
+    // Shows/hides direction-specific items and
+    // updates direction-sensitive label text.
+    // =============================================
+    function setSetup(mode) {
+      state.setup = mode;
+      saveSetup();
+      applySetup(mode, true);
+      renderSetupToggle();
+      renderChecklist();
+      renderProgress();
+      renderInv();
+      renderGates();
+    }
+
+    function applySetup(mode, animated) {
+      // Show/hide directional items
+      BUY_ONLY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('hidden', mode !== 'buy');
+      });
+      SELL_ONLY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('hidden', mode !== 'sell');
+      });
+
+      // Update direction-sensitive descriptions
+      const isBuy = mode === 'buy';
+
+      // item-1 desc
+      const d1 = document.getElementById('desc-1');
+      if (d1) d1.textContent = isBuy
+        ? 'Are we in an uptrend? Higher highs and higher lows (bullish)?'
+        : 'Are we in a downtrend? Lower highs and lower lows (bearish)?';
+
+      // item-6 desc: target
+      const d6 = document.getElementById('desc-6');
+      if (d6) d6.textContent = isBuy
+        ? 'Previous highs, equal highs, or liquidity pools above (bullish target).'
+        : 'Previous lows, equal lows, or liquidity pools below (bearish target).';
+
+      // item-10 desc: correction observe
+      const d10 = document.getElementById('desc-10');
+      if (d10) d10.textContent = isBuy
+        ? 'Price moves against the trend back through the Pre-Indication Level. Sellers temporarily step in. Let it happen.'
+        : 'Price moves against the trend back through the Pre-Indication Level. Buyers temporarily step in. Let it happen.';
+
+      // item-12 desc: invalidation
+      const d12 = document.getElementById('desc-12');
+      if (d12) d12.textContent = isBuy
+        ? 'If price breaks below a key swing (bullish setup) = correction failed. Walk away. Wait for new setup.'
+        : 'If price breaks above a key swing (bearish setup) = correction failed. Walk away. Wait for new setup.';
+
+      // item-13 desc: entry close
+      const d13 = document.getElementById('desc-13');
+      if (d13) d13.textContent = isBuy
+        ? 'Bullish: close back ABOVE the level. Correction is complete. Trend wants to continue up.'
+        : 'Bearish: close back BELOW the level. Correction is complete. Trend wants to continue down.';
+
+      // item-14 title: limit order type
+      const t14 = document.getElementById('title-14');
+      if (t14) t14.textContent = isBuy
+        ? 'Place Buy Limit at the defended swing level'
+        : 'Place Sell Limit at the defended swing level';
+
+      // item-16 desc: stop loss placement
+      const d16 = document.getElementById('desc-16');
+      if (d16) d16.textContent = isBuy
+        ? 'Bullish: set stop below the higher low of the correction. This is your invalidation level.'
+        : 'Bearish: set stop above the lower high of the correction. This is your invalidation level.';
+    }
+
+    // =============================================
+    // INVALIDATION YES/NO ANSWER (Correction section)
+    // Stored per setup mode in state.inv
+    // =============================================
+    // INVALIDATION YES/NO — toggle off if same answer tapped again
+    function invAnswer(answer) {
+      // If tapping the already-selected answer, deselect it
+      const current = state.inv[state.setup];
+      state.inv[state.setup] = current === answer ? null : answer;
+      localStorage.setItem('icc_inv_v1', JSON.stringify(state.inv));
+      renderInv();
+      renderProgress(); // always update progress immediately
+    }
+
+    function renderInv() {
+      const ans = state.inv[state.setup] || null;
+      const yesBtn = document.getElementById('inv-yes');
+      const noBtn  = document.getElementById('inv-no');
+      if (!yesBtn || !noBtn) return;
+      yesBtn.className = 'pm-btn' + (ans === 'yes' ? ' selected-yes' : '');
+      noBtn.className  = 'pm-btn' + (ans === 'no'  ? ' selected-no'  : '');
+    }
+
+    // =============================================
+    // GENERIC GATE CHECKS (Bias, Retest, Closed, Calm)
+    // Yes/No questions, same pattern as invalidation,
+    // stored per setup mode in state.gates.
+    // Yes = green/good, No = red/no trade.
+    // =============================================
+    const GATE_IDS = ['bias', 'retest', 'closed', 'calm', 'filled'];
+
+    function gateAnswer(gateName, answer) {
+      const current = state.gates[state.setup][gateName];
+      state.gates[state.setup][gateName] = current === answer ? null : answer;
+      localStorage.setItem('icc_gates_v1', JSON.stringify(state.gates));
+      renderGate(gateName);
+      renderProgress();
+    }
+
+    function renderGate(gateName) {
+      const ans = state.gates[state.setup][gateName] || null;
+      const yesBtn = document.getElementById(gateName + '-yes');
+      const noBtn  = document.getElementById(gateName + '-no');
+      if (!yesBtn || !noBtn) return;
+      yesBtn.className = 'pm-btn' + (ans === 'yes' ? ' selected-yes' : '');
+      noBtn.className  = 'pm-btn' + (ans === 'no'  ? ' selected-no'  : '');
+    }
+
+    function renderGates() {
+      GATE_IDS.forEach(renderGate);
+    }
+
+    // =============================================
+    // TOGGLE SECTION COLLAPSE (Phase 1-4 cards)
+    // Persisted per section in state.sectionsOpen.
+    // =============================================
+    function toggleSection(sectionId) {
+      const isOpen = state.sectionsOpen[sectionId] !== false;
+      state.sectionsOpen[sectionId] = !isOpen;
+      localStorage.setItem('icc_sections_open_v1', JSON.stringify(state.sectionsOpen));
+      renderSection(sectionId);
+    }
+
+    function renderSection(sectionId) {
+      const body    = document.getElementById('body-' + sectionId);
+      const chevron = document.getElementById('chevron-' + sectionId);
+      if (!body) return;
+      const isOpen = state.sectionsOpen[sectionId] !== false;
+      body.classList.toggle('collapsed', !isOpen);
+      if (chevron) chevron.classList.toggle('open', isOpen);
+    }
+
+    function renderSections() {
+      ['phase-1', 'phase-2', 'phase-3', 'phase-4'].forEach(renderSection);
+    }
+
+    // =============================================
+    // CONFIRM RESET — clears main checklist only
+    // =============================================
+    function confirmReset() {
+      // Clear checklist items for the current setup mode only
+      const prefix = state.setup + '_';
+      const newChecklist = {};
+      Object.keys(state.checklist).forEach(key => {
+        if (!key.startsWith(prefix) && !WALK_ITEMS.includes(key)) {
+          newChecklist[key] = state.checklist[key];
+        }
+      });
+      state.checklist = newChecklist;
+      saveChecklist();
+
+      // Also clear the invalidation yes/no for the current mode
+      state.inv[state.setup] = null;
+      localStorage.setItem('icc_inv_v1', JSON.stringify(state.inv));
+
+      // Also clear the gate checks for the current mode
+      GATE_IDS.forEach(g => { state.gates[state.setup][g] = null; });
+      localStorage.setItem('icc_gates_v1', JSON.stringify(state.gates));
+
+      // Also re-open all sections
+      state.sectionsOpen = { 'phase-1': true, 'phase-2': true, 'phase-3': true, 'phase-4': true };
+      localStorage.setItem('icc_sections_open_v1', JSON.stringify(state.sectionsOpen));
+
+      renderAll();
+    }
+
+    // =============================================
+    // START THE APP
+    // =============================================
+    init();
+  </script>
+
+</body>
+</html>
