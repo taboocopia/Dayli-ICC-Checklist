@@ -529,7 +529,7 @@
     .btn-reset-lg:active { opacity: 0.85; transform: scale(0.98); }
 
     .closing-quote {
-      background: var(--phase1-bg);
+      background: var(--phase4-bg);
       border-radius: 14px;
       padding: 16px 18px;
       margin-bottom: 24px;
@@ -567,6 +567,109 @@
       color: var(--subtext);
       opacity: 0.75;
       margin-top: 5px;
+    }
+
+    /* Golden Rule: Candle Closure Confirmation box (inside info section) */
+    .golden-rule-box {
+      background: var(--accent);
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 16px;
+      margin: 18px 0;
+    }
+    .golden-rule-box .grb-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--phase3-bg);
+      margin-bottom: 8px;
+    }
+    .golden-rule-box .grb-body {
+      font-size: 13px;
+      line-height: 1.6;
+      opacity: 0.92;
+      margin-bottom: 12px;
+    }
+    .grb-phase-row {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 6px;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+    .grb-phase-row .grb-label {
+      font-weight: 700;
+      font-size: 10.5px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      padding: 2px 8px;
+      border-radius: 99px;
+    }
+    .grb-phase-row.p1 .grb-label { background: var(--phase2-bg); color: #6d2f5c; }
+    .grb-phase-row.p2 .grb-label { background: var(--phase3-bg); color: #6d3d10; }
+    .grb-phase-row.p3 .grb-label { background: var(--phase4-bg); color: #6d2f5c; }
+    .grb-footer {
+      text-align: center;
+      font-weight: 700;
+      font-size: 12.5px;
+      color: var(--phase3-bg);
+      margin-top: 4px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* Full ICC Flow diagram (inside info section) */
+    .flow-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.7;
+      margin: 18px 0 10px;
+    }
+    .flow-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+    .flow-step {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #39243D;
+      padding: 7px 11px;
+      border-radius: 10px;
+      line-height: 1.3;
+    }
+    .flow-arrow {
+      color: var(--subtext);
+      opacity: 0.4;
+      font-size: 13px;
+    }
+    .flow-step.f1 { background: var(--phase1-bg); }
+    .flow-step.f2 { background: var(--phase2-bg); }
+    .flow-step.f3 { background: var(--phase3-bg); }
+    .flow-step.f4 { background: var(--phase4-bg); }
+
+    /* Walk-away reminder statement */
+    .walk-away-statement {
+      text-align: center;
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--card-border);
+    }
+    .walk-away-statement .red-word {
+      color: #de0826;
+      font-weight: 800;
     }
 
     /* =============================================
@@ -652,6 +755,36 @@
     <p style="font-size:13.5px; line-height:1.6; margin:0;">
       <strong>The only unchecked box</strong> is the one that does not match your trend direction. Bullish setup? The bearish confirmation box stays empty. That's not a problem. But other than that, every other box should be checked.
     </p>
+
+    <div class="golden-rule-box">
+      <div class="grb-title">💡 The Golden Rule — Candle Closure Confirmation</div>
+      <div class="grb-body">Every phase of ICC must be confirmed with a candle closure through the Pre-Indication Level. A wick does not count. Price must fully close through the level.</div>
+      <div class="grb-phase-row p1"><span class="grb-label">Phase 1</span><span>A 1M candle closes <strong>through</strong> the Pre-Indication Level. This confirms the Indication.</span></div>
+      <div class="grb-phase-row p2"><span class="grb-label">Phase 2</span><span>Price pulls back and retests the Pre-Indication Level. The <strong>retest</strong> confirms this is a valid ICC setup.</span></div>
+      <div class="grb-phase-row p3"><span class="grb-label">Phase 3</span><span>A 1M candle closes <strong>back through</strong> the level in the direction of the trend. This is your entry trigger.</span></div>
+      <div class="grb-footer">No candle closure = no confirmation = no trade. Every time.</div>
+    </div>
+
+    <div class="flow-title">Full ICC Flow — Lock This In</div>
+    <div class="flow-wrap">
+      <span class="flow-step f1">HTF Bias + Pre-Indication Level</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step f2">1M Close: Indication</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step f3">Watch: Correction</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step f4">2nd Close: Confirmation</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step f4">Below HL: Stop Loss</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step f4">Limit: Entry</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step f4">1:1 / 1:2: TP + TP2</span>
+    </div>
+
+    <div class="walk-away-statement">
+      Walk away if any of the yes/no questions are <span class="red-word">RED</span>.
+    </div>
   </div>
   </div>
 </div>
@@ -665,8 +798,8 @@
      if you want fully independent buy/sell checklists.
 ============================================= -->
 <div class="setup-toggle">
-  <button class="toggle-btn active-buy" id="toggleBuy" onclick="setSetup('buy')">Buy Setup</button>
-  <button class="toggle-btn" id="toggleSell" onclick="setSetup('sell')">Sell Setup</button>
+  <button class="toggle-btn active-buy" id="toggleBuy" onclick="setSetup('buy')">🫧 Buy Setup</button>
+  <button class="toggle-btn" id="toggleSell" onclick="setSetup('sell')">🫧 Sell Setup</button>
 </div>
 
 <!-- Small label echoing current mode -->
