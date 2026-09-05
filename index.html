@@ -44,8 +44,8 @@
       --reset-lg:       #39243D;   /* large reset button */
       --buy-accent:     #39243D;   /* buy/bullish accent */
       --sell-accent:    #8fb4c8;   /* sell/bearish accent */
-      --phase1-bg:      #A0D8C8;
-      --phase2-bg:      #F098B0; 
+      --phase1-bg:      #F098B0;
+      --phase2-bg:      #A0D8C8;
       --phase3-bg:      #F8B070;
       --phase4-bg:      #F8C0D0;
       --walk-bg:        #f5e8e8;
@@ -172,7 +172,12 @@
     .page-title {
       text-align: center;
       margin-bottom: 16px;
-      padding-top: 4px;
+      padding: 20px 16px 16px;
+      background: rgba(255, 253, 251, 0.72);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 2px solid var(--card-border);
+      border-radius: 18px;
     }
 
     .page-title h1 {
@@ -220,6 +225,20 @@
       flex-shrink: 0;
     }
     .chevron.open { transform: rotate(180deg); }
+
+    /* Completion badge shown in a phase header once every item is checked */
+    .section-badge {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--check-done);
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-badge.visible { display: flex; }
+    .section-badge svg { width: 11px; height: 9px; color: #1f6b4f; }
 
     /* Yes/No button pair (used by invalidation + gate checks) */
     .pm-buttons {
@@ -458,15 +477,15 @@
     }
 
     /* Tag color variants */
-    .tag-tf    { background: #A0D8C8; color: #014D4E; }
-    .tag-htf   { background: #A0D8C8; color: #014D4E; }
-    .tag-key   { background: #A0D8C8; color: #014D4E; }
-    .tag-target{ background: #A0D8C8; color: #014D4E; }
-    .tag-1m    { background: #F098B0; color: #572649; }
+    .tag-tf    { background: var(--phase1-bg); color: #572649; }
+    .tag-htf   { background: var(--phase1-bg); color: #572649; }
+    .tag-key   { background: var(--phase1-bg); color: #572649; }
+    .tag-target{ background: var(--phase1-bg); color: #572649; }
+    .tag-1m    { background: var(--phase2-bg); color: #014D4E; }
     .phase-specific { background: #F8B070; color: #7a5020; }
     .phase-specific-2 { background: #F8C0D0; color: #6d2f5c; }
-    .tag-bull  { background: #F098B0; color: #572649; }
-    .tag-bear  { background: #F098B0; color: #572649; }
+    .tag-bull  { background: var(--phase2-bg); color: #014D4E; }
+    .tag-bear  { background: var(--phase2-bg); color: #014D4E; }
     .tag-inv   { background: #39243D; color: #ffffff; }
     .tag-lim   { background: #F8C0D0; color: #a3368c; }
     .tag-nofill{ background: #39243D; color: #ffffff; }
@@ -547,6 +566,7 @@
 
     .closing-quote {
       background: var(--phase4-bg);
+      border: 2px solid var(--card-border);
       border-radius: 14px;
       padding: 16px 18px;
       margin-bottom: 24px;
@@ -599,8 +619,7 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--phase3-bg);
-      margin-bottom: 8px;
+      color: var(--phase1-bg);
     }
     .golden-rule-box .grb-body {
       font-size: 13px;
@@ -635,7 +654,7 @@
       text-align: center;
       font-weight: 700;
       font-size: 12.5px;
-      color: var(--phase3-bg);
+      color: var(--phase2-bg);
       margin-top: 4px;
       padding-top: 10px;
       border-top: 1px solid rgba(255,255,255,0.15);
@@ -689,6 +708,34 @@
       font-weight: 800;
     }
 
+    /* Bus Pass — optional advanced technique note (inside Phase 4) */
+    .bus-pass-card {
+      margin: 4px 16px 10px;
+      border: 1.5px dashed var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .bus-pass-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .bus-pass-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .bus-pass-body {
+      padding: 0 14px 14px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
     /* =============================================
        SETUP TYPE LABEL BADGE (Buy/Sell indicator)
     ============================================= */
@@ -735,13 +782,13 @@
   <div class="content">
 
 
-<div class="page-title" style="padding-top:18px; text-align:center;">
+<div class="page-title">
   <h1 style="margin:0; text-align:center;">
     <img src="./Logo.png" alt="Dayli ICC Method Checklist"
          style="width:350px; display:block; margin:0 auto;">
   </h1>
   <p class="subtitle" style="margin-bottom:8px;">The Dayli ICC Method</p>
-  <div style="width:48px;height:2px;background:var(--accent);border-radius:2px;margin:10px auto 10px;opacity:0.5;"></div>
+  <div style="width:48px;height:3px;background:linear-gradient(90deg, var(--phase1-bg), var(--phase2-bg));border-radius:2px;margin:10px auto 10px;"></div>
   <p class="subtitle" style="margin-bottom:8px;">Indication · Correction · Continuation</p>
 </div>
 
@@ -776,7 +823,7 @@
     </p>
 
     <div class="golden-rule-box">
-      <div class="grb-title">💡 The Golden Rule — Candle Closure Confirmation</div>
+      <div class="grb-title">The Golden Rule — Candle Closure Confirmation</div>
       <div class="grb-body">Every phase of ICC must be confirmed with a candle closure through the Pre-Indication Level. A wick does not count. Price must fully close through the level.</div>
       <div class="grb-phase-row p1"><span class="grb-label">Phase 1</span><span>A 1M candle closes <strong>through</strong> the Pre-Indication Level. This confirms the Indication.</span></div>
       <div class="grb-phase-row p2"><span class="grb-label">Phase 2</span><span>Price pulls back and retests the Pre-Indication Level. The <strong>retest</strong> confirms this is a valid ICC setup.</span></div>
@@ -834,6 +881,7 @@
       <div class="section-phase-label">First Thing When You Open a Chart</div>
       <div class="section-title">HTF Bias & Setup Conditions</div>
     </div>
+        <span class="section-badge" id="badge-phase-1"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></span>
     <svg class="chevron open" id="chevron-phase-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
@@ -951,6 +999,7 @@
       <div class="section-title">Indication</div>
     </div>
     <span class="section-tag">Drop to 1M</span>
+        <span class="section-badge" id="badge-phase-2"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></span>
     <svg class="chevron open" id="chevron-phase-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
@@ -1012,6 +1061,7 @@
       <div class="section-title">Correction</div>
     </div>
     <span class="section-tag">Watch. Don't touch.</span>
+        <span class="section-badge" id="badge-phase-3"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></span>
     <svg class="chevron open" id="chevron-phase-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
@@ -1103,6 +1153,7 @@
       <div class="section-title">Continuation Entry</div>
     </div>
     <span class="section-tag">Execute with precision</span>
+        <span class="section-badge" id="badge-phase-4"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></span>
     <svg class="chevron open" id="chevron-phase-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
@@ -1156,6 +1207,23 @@
         <!-- Direction-aware title -->
         <div class="item-title" id="title-14">Place Buy Limit at the defended swing level</div>
         <div class="item-desc">After the confirmation close, limit order at the defended swing level. Let price come to me.</div>
+      </div>
+    </div>
+
+    <!-- Bus Pass — optional advanced technique, collapsed by default -->
+    <div class="bus-pass-card">
+      <div class="bus-pass-header" id="header-bus-pass" onclick="toggleSection('bus-pass')">
+        <span class="bus-pass-title">⚡ Advanced: The Bus Pass</span>
+        <svg class="chevron" id="chevron-bus-pass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </div>
+      <div class="section-body collapsed" id="body-bus-pass">
+        <div class="bus-pass-body">
+          <p style="margin:0 0 8px;">An optional technique for catching continuation moves that never give a clean retest. Instead of entering right at the defended swing level, move your limit entry <strong>5 points beyond it</strong>. Only trigger the order if the continuation candle closes within 5 points of the true entry line — since limit orders fill at the best available price, your real entry and stop loss barely change (about 4.5 points worst case).</p>
+          <p style="margin:0 0 8px;"><strong>The Bus Pass:</strong> if the continuation closes within 5 points but price still never fills you, that's a Bus Pass. You did everything right — it just didn't happen. No further action needed. Move on to the next setup.</p>
+          <p style="margin:0; font-weight:700; color:#de0826;">⚠️ Don't attempt this without training on it first.</p>
+        </div>
       </div>
     </div>
 
@@ -1287,6 +1355,42 @@
     const BUY_ONLY_IDS  = ['item-8'];
     const SELL_ONLY_IDS = ['item-8s'];
 
+    // Which checkbox items + gates belong to each phase, for the
+    // "all done" completion badge in that phase's header.
+    const PHASE_ITEMS = {
+      'phase-1': { checkboxes: ['item-1','item-2','item-3','item-4','item-5','item-6'], gates: ['bias'] },
+      'phase-2': { checkboxes: ['item-7','item-8','item-8s','item-9'], gates: [] },
+      'phase-3': { checkboxes: ['item-10','item-11'], gates: ['inv','retest'] },
+      'phase-4': { checkboxes: ['item-13','item-14','item-16','item-17','item-18','item-19'], gates: ['closed','calm','filled'] },
+    };
+
+    function isSectionComplete(sectionId) {
+      const def = PHASE_ITEMS[sectionId];
+      if (!def) return false;
+      for (const id of def.checkboxes) {
+        const el = document.getElementById(id);
+        if (!el || el.classList.contains('hidden')) continue; // not shown in this buy/sell mode
+        const key = state.setup + '_' + id;
+        if (!state.checklist[key]) return false;
+      }
+      for (const g of def.gates) {
+        const answered = g === 'inv'
+          ? (state.inv[state.setup] !== null && state.inv[state.setup] !== undefined)
+          : (state.gates[state.setup][g] !== null && state.gates[state.setup][g] !== undefined);
+        if (!answered) return false;
+      }
+      return true;
+    }
+
+    function renderSectionBadges() {
+      Object.keys(PHASE_ITEMS).forEach(sectionId => {
+        const badge = document.getElementById('badge-' + sectionId);
+        if (!badge) return;
+        badge.classList.toggle('visible', isSectionComplete(sectionId));
+      });
+    }
+
+
     // =============================================
     // STATE — loaded from localStorage on init
     // =============================================
@@ -1394,6 +1498,7 @@
 
     // Render progress bar and count — scoped to current setup mode
     function renderProgress() {
+      renderSectionBadges();
       let total = 0;
       let done  = 0;
       MAIN_ITEMS.forEach(id => {
