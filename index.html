@@ -238,31 +238,6 @@
       color: #de0826;
     }
 
-    /* Bottom collapse button inside each phase section */
-    .pm-collapse-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 12px;
-      background: none;
-      border: 1.5px solid var(--card-border);
-      border-radius: 99px;
-      padding: 7px 18px;
-      color: var(--accent);
-      font-family: var(--font-body);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      cursor: pointer;
-      width: 100%;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 0.2s;
-    }
-    .pm-collapse-btn:active { background: var(--tag-bg); }
-    .pm-collapse-btn svg { width: 14px; height: 14px; }
-
     /* =============================================
        SETUP TYPE — two separate standalone buttons
        Active highlight matches the Pending badge style
@@ -386,6 +361,17 @@
     .phase-4 .section-header { background: var(--phase4-bg); color: #39243D; }
     .phase-4 .section-num    { background: #39243D; }
     .phase-4 .section-tag    { background: #39243D; color: #ffffff; }
+
+    /* Info section: header matches the Reset button gradient; body stays plain white */
+    .info-section .section-header {
+      background: linear-gradient(135deg, var(--accent), var(--buy-accent));
+      color: #ffffff;
+    }
+    .info-section .section-num {
+      background: #ffffff;
+      color: var(--accent);
+    }
+    .info-section .chevron { color: #ffffff; }
 
   
 
@@ -542,6 +528,47 @@
     }
     .btn-reset-lg:active { opacity: 0.85; transform: scale(0.98); }
 
+    .closing-quote {
+      background: var(--phase1-bg);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 24px;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      text-align: center;
+    }
+    .closing-quote strong { font-style: normal; color: var(--accent); }
+
+    /* Dayli ICC / Dayli 2.0 method toggle (inside invalidation item) */
+    .method-btn {
+      flex: 1;
+      background: none;
+      border: 1.5px solid var(--check-border);
+      color: var(--text-primary);
+      border-radius: 99px;
+      padding: 5px 0;
+      font-family: var(--font-body);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .method-btn.active {
+      background: var(--phase4-bg);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .method-caption {
+      font-size: 11px;
+      color: var(--subtext);
+      opacity: 0.75;
+      margin-top: 5px;
+    }
+
     /* =============================================
        SETUP TYPE LABEL BADGE (Buy/Sell indicator)
     ============================================= */
@@ -597,6 +624,40 @@
 </div>
 
 <!-- =============================================
+     INFO — What This Is / How To Use It
+     Collapsed by default.
+============================================= -->
+<div class="section-card info-section">
+  <div class="section-header" id="header-info" onclick="toggleSection('info')">
+    <div class="section-num">i</div>
+    <div class="section-header-text">
+      <div class="section-phase-label">Before you start</div>
+      <div class="section-title">What This Is &amp; How To Use It</div>
+    </div>
+    <svg class="chevron" id="chevron-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </div>
+  <div class="section-body collapsed" id="body-info">
+  <div class="items-list" style="padding:14px 16px;">
+    <p style="font-size:13.5px; line-height:1.6; margin:0 0 12px;">
+      This checklist walks you through <strong>every step of the ICC framework</strong> in the exact order you need to execute it — from confirming your HTF bias, to identifying your Pre-Indication Level, all the way through entry, stop loss, and take profit. Nothing is skipped. Nothing is assumed.
+    </p>
+    <p style="font-size:13.5px; line-height:1.6; margin:0 0 8px;">
+      <strong>Before you touch a chart</strong> — open this checklist. Confirm your HTF bias on the 1H and 4H. Mark your Pre-Indication Level. Know your target before you look for a setup.
+    </p>
+    <p style="font-size:13.5px; line-height:1.6; margin:0 0 8px;">
+      <strong>At each phase</strong> — check each box only when it is fully confirmed with a candle closure. No guessing. No halfway checks. Every box checked = every rule followed.
+    </p>
+    <p style="font-size:13.5px; line-height:1.6; margin:0;">
+      <strong>The only unchecked box</strong> is the one that does not match your trend direction. Bullish setup? The bearish confirmation box stays empty. That's not a problem. But other than that, every other box should be checked.
+    </p>
+  </div>
+  </div>
+</div>
+
+
+<!-- =============================================
      BUY / SELL SETUP TOGGLE
      Switching toggles which set of tagged items shows.
      The checklist state is shared (same items, direction
@@ -604,8 +665,8 @@
      if you want fully independent buy/sell checklists.
 ============================================= -->
 <div class="setup-toggle">
-  <button class="toggle-btn active-buy" id="toggleBuy" onclick="setSetup('buy')">🫧 Buy Setup</button>
-  <button class="toggle-btn" id="toggleSell" onclick="setSetup('sell')">🫧 Sell Setup</button>
+  <button class="toggle-btn active-buy" id="toggleBuy" onclick="setSetup('buy')">Buy Setup</button>
+  <button class="toggle-btn" id="toggleSell" onclick="setSetup('sell')">Sell Setup</button>
 </div>
 
 <!-- Small label echoing current mode -->
@@ -723,12 +784,6 @@
     </div>
 
   </div>
-    <button class="pm-collapse-btn" onclick="toggleSection('phase-1')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="18 15 12 9 6 15"></polyline>
-      </svg>
-      Collapse
-    </button>
   </div>
 </div>
 <!-- / Phase 1 -->
@@ -790,12 +845,6 @@
   <div class="info-note">
     Do NOT enter here. Wait for the correction. The indication is just confirmation of direction.
   </div>
-    <button class="pm-collapse-btn" onclick="toggleSection('phase-2')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="18 15 12 9 6 15"></polyline>
-      </svg>
-      Collapse
-    </button>
   </div>
 </div>
 <!-- / Phase 2 -->
@@ -855,8 +904,14 @@
     <div class="checklist-item inv-yesno" style="cursor:default;">
       <div class="item-content" style="flex:1;">
         <div class="item-tags"><span class="item-tag tag-inv">Invalidation</span></div>
-        <div class="item-title">Did structure break the RIGHT way?</div>
+        <div class="item-title">Did structure break the WRONG way?</div>
         <div class="item-desc" id="desc-12">If price breaks below a key swing (bullish setup) = correction failed. Walk away. Wait for new setup.</div>
+
+        <div class="method-toggle" style="display:flex; gap:6px; margin-top:10px;">
+          <button class="method-btn active" id="method-icc" onclick="setMethod('icc')">Dayli ICC</button>
+          <button class="method-btn" id="method-20" onclick="setMethod('2.0')">Dayli 2.0</button>
+        </div>
+        <div class="method-caption" id="methodCaption">Correction capped at 30 points.</div>
       </div>
       <div class="pm-buttons" style="flex-shrink:0;align-self:center;">
         <button class="pm-btn" id="inv-yes" onclick="invAnswer('yes')">Yes</button>
@@ -881,12 +936,6 @@
   <div class="info-note">
     The correction is not complete at the pullback. It is complete at the RETEST + CLOSE.
   </div>
-    <button class="pm-collapse-btn" onclick="toggleSection('phase-3')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="18 15 12 9 6 15"></polyline>
-      </svg>
-      Collapse
-    </button>
   </div>
 </div>
 <!-- / Phase 3 -->
@@ -1016,12 +1065,6 @@
     </div>
 
   </div>
-    <button class="pm-collapse-btn" onclick="toggleSection('phase-4')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="18 15 12 9 6 15"></polyline>
-      </svg>
-      Collapse
-    </button>
   </div>
 </div>
 <!-- / Phase 4 -->
@@ -1036,6 +1079,11 @@
 ============================================= -->
 <button class="btn-reset-lg" onclick="confirmReset()">↺ Reset Checklist</button>
 
+<!-- Closing quote -->
+<div class="closing-quote">
+  You don't enter because price is moving. You enter because <strong>the setup is complete.</strong>
+  Run the checklist every time. No exceptions. If any box is missing a check, there is no trade.
+</div>
 
   </div>
   <!-- / .content -->
@@ -1088,7 +1136,8 @@
         buy:  { bias: null, retest: null, closed: null, calm: null, filled: null },
         sell: { bias: null, retest: null, closed: null, calm: null, filled: null },
       },
-      sectionsOpen: { 'phase-1': true, 'phase-2': true, 'phase-3': true, 'phase-4': true },
+      sectionsOpen: { 'info': false, 'phase-1': true, 'phase-2': true, 'phase-3': true, 'phase-4': true },
+      method: { buy: 'icc', sell: 'icc' }, // 'icc' = Dayli ICC (<=30pt correction), '2.0' = Dayli 2.0 (extended)
     };
 
     // =============================================
@@ -1119,6 +1168,12 @@
 
         const sections = localStorage.getItem('icc_sections_open_v1');
         if (sections) state.sectionsOpen = JSON.parse(sections);
+        // The info section is a reference blurb, not part of the trade
+        // workflow — always start collapsed, don't remember it across loads.
+        state.sectionsOpen['info'] = false;
+
+        const method = localStorage.getItem('icc_method_v1');
+        if (method) state.method = JSON.parse(method);
       } catch (e) {
         console.warn('Error loading state:', e);
       }
@@ -1144,6 +1199,7 @@
       renderInv();
       renderGates();
       renderSections();
+      renderMethod();
     }
 
     // Render main checklist item checked states for CURRENT mode
@@ -1252,6 +1308,7 @@
       renderProgress();
       renderInv();
       renderGates();
+      renderMethod();
     }
 
     function applySetup(mode, animated) {
@@ -1330,8 +1387,34 @@
       const yesBtn = document.getElementById('inv-yes');
       const noBtn  = document.getElementById('inv-no');
       if (!yesBtn || !noBtn) return;
-      yesBtn.className = 'pm-btn' + (ans === 'yes' ? ' selected-yes' : '');
-      noBtn.className  = 'pm-btn' + (ans === 'no'  ? ' selected-no'  : '');
+      // Flipped from the other gates: here YES means "it broke wrong" = bad = red.
+      yesBtn.className = 'pm-btn' + (ans === 'yes' ? ' selected-no'  : '');
+      noBtn.className  = 'pm-btn' + (ans === 'no'  ? ' selected-yes' : '');
+    }
+
+    // =============================================
+    // METHOD TOGGLE — Dayli ICC vs Dayli 2.0
+    // Only changes the 30-point correction cap
+    // referenced in the invalidation caption.
+    // Stored per setup mode, resets with the checklist.
+    // =============================================
+    function setMethod(method) {
+      state.method[state.setup] = method;
+      localStorage.setItem('icc_method_v1', JSON.stringify(state.method));
+      renderMethod();
+    }
+
+    function renderMethod() {
+      const method = state.method[state.setup] || 'icc';
+      const iccBtn = document.getElementById('method-icc');
+      const btn20  = document.getElementById('method-20');
+      const caption = document.getElementById('methodCaption');
+      if (!iccBtn || !btn20 || !caption) return;
+      iccBtn.classList.toggle('active', method === 'icc');
+      btn20.classList.toggle('active', method === '2.0');
+      caption.textContent = method === '2.0'
+        ? 'Dayli 2.0 allows corrections past 30 points.'
+        : 'Correction capped at 30 points.';
     }
 
     // =============================================
@@ -1384,7 +1467,7 @@
     }
 
     function renderSections() {
-      ['phase-1', 'phase-2', 'phase-3', 'phase-4'].forEach(renderSection);
+      ['info', 'phase-1', 'phase-2', 'phase-3', 'phase-4'].forEach(renderSection);
     }
 
     // =============================================
@@ -1411,8 +1494,12 @@
       localStorage.setItem('icc_gates_v1', JSON.stringify(state.gates));
 
       // Also re-open all sections
-      state.sectionsOpen = { 'phase-1': true, 'phase-2': true, 'phase-3': true, 'phase-4': true };
+      state.sectionsOpen = { 'info': false, 'phase-1': true, 'phase-2': true, 'phase-3': true, 'phase-4': true };
       localStorage.setItem('icc_sections_open_v1', JSON.stringify(state.sectionsOpen));
+
+      // Also reset the method toggle back to Dayli ICC for the current mode
+      state.method[state.setup] = 'icc';
+      localStorage.setItem('icc_method_v1', JSON.stringify(state.method));
 
       renderAll();
     }
