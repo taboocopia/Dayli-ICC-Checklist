@@ -38,7 +38,7 @@
       --card-bg:        #ffffff;   /* card / section background */
       --card-border:    #39243D;   /* subtle card borders */
       --tag-bg:         #7ECBBA;   /* pill/tag background */
-      --check-done:     #ACE9D4;   /* checked checkbox fill */
+      --check-done:     #39243D;   /* checked checkbox fill */
       --check-border:   #39243D;   /* unchecked checkbox border */
       --reset-sm:       #39243D;   /* small reset button */
       --reset-lg:       #39243D;   /* large reset button */
@@ -232,13 +232,13 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: var(--check-done);
+      background: var(--accent);
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .section-badge.visible { display: flex; }
-    .section-badge svg { width: 11px; height: 9px; color: #1f6b4f; }
+    .section-badge svg { width: 11px; height: 9px; color: #ffffff; }
 
     /* Yes/No button pair (used by invalidation + gate checks) */
     .pm-buttons {
@@ -477,24 +477,24 @@
     }
 
     /* Tag color variants */
-    .tag-tf    { background: var(--phase1-bg); color: #572649; }
-    .tag-htf   { background: var(--phase1-bg); color: #572649; }
-    .tag-key   { background: var(--phase1-bg); color: #572649; }
-    .tag-target{ background: var(--phase1-bg); color: #572649; }
-    .tag-1m    { background: var(--phase2-bg); color: #014D4E; }
-    .phase-specific { background: #F8B070; color: #7a5020; }
-    .phase-specific-2 { background: #F8C0D0; color: #6d2f5c; }
-    .tag-bull  { background: var(--phase2-bg); color: #014D4E; }
-    .tag-bear  { background: var(--phase2-bg); color: #014D4E; }
+    .tag-tf    { background: var(--phase1-bg); color: #39243D; }
+    .tag-htf   { background: var(--phase1-bg); color: #39243D; }
+    .tag-key   { background: var(--phase1-bg); color: #39243D; }
+    .tag-target{ background: var(--phase1-bg); color: #39243D; }
+    .tag-1m    { background: var(--phase2-bg); color: #39243D; }
+    .phase-specific { background: #F8B070; color: #39243D; }
+    .phase-specific-2 { background: #F8C0D0; color: #39243D; }
+    .tag-bull  { background: var(--phase2-bg); color: #39243D; }
+    .tag-bear  { background: var(--phase2-bg); color: #39243D; }
     .tag-inv   { background: #39243D; color: #ffffff; }
-    .tag-lim   { background: #F8C0D0; color: #a3368c; }
+    .tag-lim   { background: #F8C0D0; color: #39243D; }
     .tag-nofill{ background: #39243D; color: #ffffff; }
-    .tag-sl    { background: #F8C0D0; color: #6d2f5c; }
-    .tag-tp    { background: #F8C0D0; color: #6d2f5c; }
-    .tag-tp1   { background: #F8C0D0; color: #6d2f5c; }
-    .tag-in    { background: #F8C0D0; color: #6d2f5c; }
-    .tag-ltf   { background: #F8B070; color: #7a5020; }
-    .tag-donothing { background: #F8B070; color: #7a5020; }
+    .tag-sl    { background: #F8C0D0; color: #39243D; }
+    .tag-tp    { background: #F8C0D0; color: #39243D; }
+    .tag-tp1   { background: #F8C0D0; color: #39243D; }
+    .tag-in    { background: #F8C0D0; color: #39243D; }
+    .tag-ltf   { background: #F8B070; color: #39243D; }
+    .tag-donothing { background: #F8B070; color: #39243D; }
 
     .item-title {
       font-size: 13.5px;
@@ -525,7 +525,7 @@
     .info-note {
       font-family: var(--font-display);
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 700;
       line-height: 1.5;
       text-align: center;
       background: #fff0f0;
@@ -572,12 +572,21 @@
       margin-bottom: 24px;
       font-family: var(--font-display);
       font-style: italic;
-      font-size: 14px;
+      font-size: 17px;
       line-height: 1.6;
       color: var(--text-primary);
       text-align: center;
     }
-    .closing-quote strong { font-style: normal; color: var(--accent); }
+    .closing-quote strong { font-style: normal; font-weight: 700; color: var(--accent); }
+    .from-dayli {
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
 
     /* Dayli ICC / Dayli 2.0 method toggle (inside invalidation item) */
     .method-btn {
@@ -595,7 +604,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     .method-btn.active {
-      background: var(--phase4-bg);
+      background: var(--premarket-open);
       border-color: var(--accent);
       color: var(--accent);
     }
@@ -605,6 +614,41 @@
       opacity: 0.75;
       margin-top: 5px;
     }
+
+    /* "What This Is" / "How To Use It" sub-headings inside info box */
+    .info-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+
+    /* Numbered rows inside "How To Use It" */
+    .how-to-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .how-to-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      color: #39243D;
+    }
+    .how-to-num.n1 { background: var(--phase1-bg); }
+    .how-to-num.n2 { background: var(--phase3-bg); }
+    .how-to-num.n3 { background: var(--phase2-bg); }
 
     /* Golden Rule: Candle Closure Confirmation box (inside info section) */
     .golden-rule-box {
@@ -809,22 +853,32 @@
   </div>
   <div class="section-body collapsed" id="body-info">
   <div class="items-list" style="padding:14px 16px;">
-    <p style="font-size:13.5px; line-height:1.6; margin:0 0 12px;">
-      This checklist walks you through <strong>every step of the ICC framework</strong> in the exact order you need to execute it — from confirming your HTF bias, to identifying your Pre-Indication Level, all the way through entry, stop loss, and take profit. Nothing is skipped. Nothing is assumed.
-    </p>
-    <p style="font-size:13.5px; line-height:1.6; margin:0 0 8px;">
-      <strong>Before you touch a chart</strong> — open this checklist. Confirm your HTF bias on the 1H and 4H. Mark your Pre-Indication Level. Know your target before you look for a setup.
-    </p>
-    <p style="font-size:13.5px; line-height:1.6; margin:0 0 8px;">
-      <strong>At each phase</strong> — check each box only when it is fully confirmed with a candle closure. No guessing. No halfway checks. Every box checked = every rule followed.
-    </p>
-    <p style="font-size:13.5px; line-height:1.6; margin:0;">
-      <strong>The only unchecked box</strong> is the one that does not match your trend direction. Bullish setup? The bearish confirmation box stays empty. That's not a problem. But other than that, every other box should be checked.
+
+    <h2 style="font-family: var(--font-display); font-size:20px; font-weight:700; color:var(--accent); text-align:center; margin:0 0 4px;">ICC Trade Checklist</h2>
+    <p style="font-size:12px; text-align:center; color:var(--subtext); margin:0 0 16px; text-transform:uppercase; letter-spacing:0.06em;">Run through this before every single trade. No shortcuts.</p>
+
+    <div class="info-label">What This Is</div>
+    <p style="font-size:13.5px; line-height:1.6; margin:0 0 16px;">
+      This checklist walks you through <strong>every step of the ICC framework</strong> in the exact order you need to execute it, from confirming your HTF bias, to identifying your Pre-Indication Level, all the way through entry, stop loss, and take profit. Nothing is skipped. Nothing is assumed.
     </p>
 
+    <div class="info-label">How To Use It</div>
+    <div class="how-to-row">
+      <div class="how-to-num n1">1</div>
+      <p style="font-size:13.5px; line-height:1.6; margin:0;"><strong>Before you touch a chart</strong> open this checklist. Confirm your HTF bias on the 1H and 4H. Mark your Pre-Indication Level. Know your target before you look for a setup.</p>
+    </div>
+    <div class="how-to-row">
+      <div class="how-to-num n2">2</div>
+      <p style="font-size:13.5px; line-height:1.6; margin:0;"><strong>At each phase</strong> check each box only when it is fully confirmed with a candle closure. No guessing. No halfway checks. Every box checked = every rule followed.</p>
+    </div>
+    <div class="how-to-row">
+      <div class="how-to-num n3">3</div>
+      <p style="font-size:13.5px; line-height:1.6; margin:0;"><strong>The only unchecked box</strong> is the one that does not match your trend direction. Bullish setup? The bearish confirmation box stays empty. That's not a problem. But other than that, every other box should be checked.</p>
+    </div>
+
     <div class="golden-rule-box">
-      <div class="grb-title">The Golden Rule — Candle Closure Confirmation</div>
-      <div class="grb-body">Every phase of ICC must be confirmed with a candle closure through the Pre-Indication Level. A wick does not count. Price must fully close through the level.</div>
+      <div class="grb-title">The Golden Rule Candle Closure Confirmation</div>
+      <div class="grb-body">Every phase of ICC must be confirmed with a <strong> candle closure </strong> through the Pre-Indication Level. A wick does not count. Price must fully close through the level.</div>
       <div class="grb-phase-row p1"><span class="grb-label">Phase 1</span><span>A 1M candle closes <strong>through</strong> the Pre-Indication Level. This confirms the Indication.</span></div>
       <div class="grb-phase-row p2"><span class="grb-label">Phase 2</span><span>Price pulls back and retests the Pre-Indication Level. The <strong>retest</strong> confirms this is a valid ICC setup.</span></div>
       <div class="grb-phase-row p3"><span class="grb-label">Phase 3</span><span>A 1M candle closes <strong>back through</strong> the level in the direction of the trend. This is your entry trigger.</span></div>
@@ -833,7 +887,7 @@
 
     <div class="flow-title">Full ICC Flow — Lock This In</div>
     <div class="flow-wrap">
-      <span class="flow-step f1">HTF Bias + Pre-Indication Level</span>
+      <span class="flow-step f1">HTF: Bias + Pre-Indication Level</span>
       <span class="flow-arrow">→</span>
       <span class="flow-step f2">1M Close: Indication</span>
       <span class="flow-arrow">→</span>
@@ -864,8 +918,8 @@
      if you want fully independent buy/sell checklists.
 ============================================= -->
 <div class="setup-toggle">
-  <button class="toggle-btn active-buy" id="toggleBuy" onclick="setSetup('buy')">🫧 Buy Setup</button>
-  <button class="toggle-btn" id="toggleSell" onclick="setSetup('sell')">🫧 Sell Setup</button>
+  <button class="toggle-btn active-buy" id="toggleBuy" onclick="setSetup('buy')">Buy Setup</button>
+  <button class="toggle-btn" id="toggleSell" onclick="setSetup('sell')">Sell Setup</button>
 </div>
 
 <!-- Small label echoing current mode -->
@@ -979,7 +1033,7 @@
         </div>
         <div class="item-title">Identify where price is likely headed</div>
         <!-- Direction-aware description: shows buy or sell version -->
-        <div class="item-desc" id="desc-6">Previous highs, equal highs, or liquidity pools above (bullish target).</div>
+        <div class="item-desc" id="desc-6">Previous highs, equal highs, or liquidity pools above.</div>
       </div>
     </div>
 
@@ -1206,14 +1260,14 @@
         <div class="item-tags"><span class="item-tag tag-lim">Limit Order</span></div>
         <!-- Direction-aware title -->
         <div class="item-title" id="title-14">Place Buy Limit at the defended swing level</div>
-        <div class="item-desc">After the confirmation close, limit order at the defended swing level. Let price come to me.</div>
+        <div class="item-desc">After the confirmation close, limit order at the defended swing level. I let price come to me.</div>
       </div>
     </div>
 
     <!-- Bus Pass — optional advanced technique, collapsed by default -->
     <div class="bus-pass-card">
       <div class="bus-pass-header" id="header-bus-pass" onclick="toggleSection('bus-pass')">
-        <span class="bus-pass-title">⚡ Advanced: The Bus Pass</span>
+        <span class="bus-pass-title">The Bus Pass</span>
         <svg class="chevron" id="chevron-bus-pass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
@@ -1221,22 +1275,22 @@
       <div class="section-body collapsed" id="body-bus-pass">
         <div class="bus-pass-body">
           <p style="margin:0 0 8px;">An optional technique for catching continuation moves that never give a clean retest. Instead of entering right at the defended swing level, move your limit entry <strong>5 points beyond it</strong>. Only trigger the order if the continuation candle closes within 5 points of the true entry line — since limit orders fill at the best available price, your real entry and stop loss barely change (about 4.5 points worst case).</p>
-          <p style="margin:0 0 8px;"><strong>The Bus Pass:</strong> if the continuation closes within 5 points but price still never fills you, that's a Bus Pass. You did everything right — it just didn't happen. No further action needed. Move on to the next setup.</p>
-          <p style="margin:0; font-weight:700; color:#de0826;">⚠️ Don't attempt this without training on it first.</p>
+          <p style="margin:0 0 8px;"><strong>The Bus Pass:</strong> if the continuation candle closes within 5 points but your limit order never fills, the setup simply passes. You did everything right — price just never reached your order. No further action needed. Move on to the next setup.</p>
         </div>
       </div>
     </div>
 
-    <!-- Filled gate: yes/no question instead of static statement -->
+    <!-- No Fill: yes/no question, exact original wording plus a short question line -->
     <div class="checklist-item inv-yesno" style="cursor:default;">
       <div class="item-content" style="flex:1;">
         <div class="item-tags"><span class="item-tag tag-nofill">No Fill</span></div>
-        <div class="item-title">Did your limit order get filled?</div>
-        <div class="item-desc">If it wasn't hit and price left, don't chase with a market order. Mark it as a missed trade and move on.</div>
+        <div class="item-title">If limit is not hit and price leaves: no trade</div>
+        <div class="item-desc" style="font-weight:600; margin-top:4px;">Did this happen?</div>
+        <div class="item-desc">Do not market order after it. Mark it as a missed trade and move on. Another setup will come.</div>
       </div>
       <div class="pm-buttons" style="flex-shrink:0;align-self:center;">
-        <button class="pm-btn" id="filled-yes" onclick="gateAnswer('filled','yes')">Yes</button>
-        <button class="pm-btn" id="filled-no"  onclick="gateAnswer('filled','no')">No</button>
+        <button class="pm-btn" id="filled-yes" onclick="noFillAnswer('yes')">Yes</button>
+        <button class="pm-btn" id="filled-no"  onclick="noFillAnswer('no')">No</button>
       </div>
     </div>
 
@@ -1258,7 +1312,7 @@
       <div class="item-content">
         <div class="item-tags"><span class="item-tag tag-tp">Take Profit</span></div>
         <div class="item-title">Set TP1 at 1:1 (partials) + TP2 at structure</div>
-        <div class="item-desc">Target liquidity pools, previous highs/lows, or external structure. Shoot for 1:2 minimum on MNQ.</div>
+        <div class="item-desc">Target liquidity pools, previous highs/lows, or external structure. I shoot for 1:2 minimum on MNQ.</div>
       </div>
     </div>
 
@@ -1301,6 +1355,7 @@
 
 <!-- Closing quote -->
 <div class="closing-quote">
+  <div class="from-dayli">✍🏽 FROM DAYLI</div>
   You don't enter because price is moving. You enter because <strong>the setup is complete.</strong>
   Run the checklist every time. No exceptions. If any box is missing a check, there is no trade.
 </div>
@@ -1359,8 +1414,8 @@
     // "all done" completion badge in that phase's header.
     const PHASE_ITEMS = {
       'phase-1': { checkboxes: ['item-1','item-2','item-3','item-4','item-5','item-6'], gates: ['bias'] },
-      'phase-2': { checkboxes: ['item-7','item-8','item-8s','item-9'], gates: [] },
-      'phase-3': { checkboxes: ['item-10','item-11'], gates: ['inv','retest'] },
+      'phase-2': { checkboxes: ['item-7','item-8','item-8s'], gates: [] },
+      'phase-3': { checkboxes: ['item-9','item-10','item-11'], gates: ['inv','retest'] },
       'phase-4': { checkboxes: ['item-13','item-14','item-16','item-17','item-18','item-19'], gates: ['closed','calm','filled'] },
     };
 
@@ -1520,6 +1575,10 @@
         if (state.gates[state.setup][g] !== null) done++;
       });
 
+      // No Fill counts as 1 item too (handled separately since its colors are flipped)
+      total++;
+      if (state.gates[state.setup].filled !== null) done++;
+
       const pct = total > 0 ? (done / total) * 100 : 0;
       document.getElementById('progressFill').style.width = pct + '%';
       document.getElementById('progressCount').textContent = `${done} / ${total}`;
@@ -1602,14 +1661,14 @@
       // item-6 desc: target
       const d6 = document.getElementById('desc-6');
       if (d6) d6.textContent = isBuy
-        ? 'Previous highs, equal highs, or liquidity pools above (bullish target).'
-        : 'Previous lows, equal lows, or liquidity pools below (bearish target).';
+        ? 'Previous highs, equal highs, or liquidity pools above.'
+        : 'Previous lows, equal lows, or liquidity pools below.';
 
       // item-10 desc: correction observe
       const d10 = document.getElementById('desc-10');
       if (d10) d10.textContent = isBuy
-        ? 'Price moves against the trend back through the Pre-Indication Level. Sellers temporarily step in. Let it happen.'
-        : 'Price moves against the trend back through the Pre-Indication Level. Buyers temporarily step in. Let it happen.';
+        ? 'Price moves against the trend back through the Pre-Indication Level. Sellers temporarily step in. This is normal. Let it happen.'
+        : 'Price moves against the trend back through the Pre-Indication Level. Buyers temporarily step in. This is normal. Let it happen.';
 
       // item-12 desc: invalidation
       const d12 = document.getElementById('desc-12');
@@ -1620,20 +1679,20 @@
       // item-13 desc: entry close
       const d13 = document.getElementById('desc-13');
       if (d13) d13.textContent = isBuy
-        ? 'Bullish: close back ABOVE the level. Correction is complete. Trend wants to continue up.'
-        : 'Bearish: close back BELOW the level. Correction is complete. Trend wants to continue down.';
+        ? 'This is your signal. Bullish: close back ABOVE the level. Correction is complete. Trend wants to continue.'
+        : 'This is your signal. Bearish: close back BELOW the level. Correction is complete. Trend wants to continue.';
 
       // item-14 title: limit order type
       const t14 = document.getElementById('title-14');
       if (t14) t14.textContent = isBuy
-        ? 'Place Buy Limit at the defended swing level'
-        : 'Place Sell Limit at the defended swing level';
+        ? 'Place Buy Limit'
+        : 'Place Sell Limit';
 
       // item-16 desc: stop loss placement
       const d16 = document.getElementById('desc-16');
       if (d16) d16.textContent = isBuy
-        ? 'Bullish: set stop below the higher low of the correction. This is your invalidation level.'
-        : 'Bearish: set stop above the lower high of the correction. This is your invalidation level.';
+        ? 'Below the higher low of the correction. This is your invalidation level.'
+        : 'Above the lower high of the correction. This is your invalidation level.';
     }
 
     // =============================================
@@ -1681,8 +1740,8 @@
       iccBtn.classList.toggle('active', method === 'icc');
       btn20.classList.toggle('active', method === '2.0');
       caption.textContent = method === '2.0'
-        ? 'Dayli 2.0 allows corrections past 30 points.'
-        : 'Correction capped at 30 points.';
+        ? 'Allows correction to be greater than 30 points.'
+        : 'Max correction is 30 points.';
     }
 
     // =============================================
@@ -1691,7 +1750,7 @@
     // stored per setup mode in state.gates.
     // Yes = green/good, No = red/no trade.
     // =============================================
-    const GATE_IDS = ['bias', 'retest', 'closed', 'calm', 'filled'];
+    const GATE_IDS = ['bias', 'retest', 'closed', 'calm'];
 
     function gateAnswer(gateName, answer) {
       const current = state.gates[state.setup][gateName];
@@ -1712,6 +1771,30 @@
 
     function renderGates() {
       GATE_IDS.forEach(renderGate);
+      renderNoFill();
+    }
+
+    // =============================================
+    // NO FILL — kept as its own function (like invAnswer)
+    // because its Yes/No colors are flipped from the
+    // other gates: Yes here means "no trade" = red.
+    // Stored under state.gates[mode].filled.
+    // =============================================
+    function noFillAnswer(answer) {
+      const current = state.gates[state.setup].filled;
+      state.gates[state.setup].filled = current === answer ? null : answer;
+      safeSet('icc_gates_v1', JSON.stringify(state.gates));
+      renderNoFill();
+      renderProgress();
+    }
+
+    function renderNoFill() {
+      const ans = state.gates[state.setup].filled || null;
+      const yesBtn = document.getElementById('filled-yes');
+      const noBtn  = document.getElementById('filled-no');
+      if (!yesBtn || !noBtn) return;
+      yesBtn.className = 'pm-btn' + (ans === 'yes' ? ' selected-no'  : '');
+      noBtn.className  = 'pm-btn' + (ans === 'no'  ? ' selected-yes' : '');
     }
 
     // =============================================
@@ -1759,6 +1842,7 @@
 
       // Also clear the gate checks for the current mode
       GATE_IDS.forEach(g => { state.gates[state.setup][g] = null; });
+      state.gates[state.setup].filled = null;
       safeSet('icc_gates_v1', JSON.stringify(state.gates));
 
       // Also re-open all sections
