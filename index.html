@@ -61,14 +61,29 @@
 
     body {
       font-family: var(--font-body);
-      background: var(--bg);
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-attachment: fixed;
-      background-position: top center;
+      background: #fffdfb; /* fallback base tone, actual art is the fixed layer below */
       color: var(--text-primary);
       min-height: 100vh;
       padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
+    }
+
+    /* Fixed background layer — deliberately NOT on body/html.
+       iOS Safari doesn't reliably keep background-attachment:fixed
+       pinned when page content height changes (e.g. collapsing a
+       section). A dedicated position:fixed layer sized to the
+       viewport sidesteps that bug entirely — it can never shift or
+       rescale based on page content. */
+    .bg-fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: top center;
+      z-index: -1;
     }
 
     /* =============================================
@@ -697,6 +712,8 @@
 </head>
 <body>
 
+<div class="bg-fixed"></div>
+
   <!-- =============================================
        STICKY HEADER: progress bar + small reset
        Hidden until progress starts (no space reserved)
@@ -1238,6 +1255,17 @@
       setup:       'icc_setup_v1',         // 'buy' or 'sell'
     };
 
+    // Some browsers/preview modes block localStorage entirely (private
+    // browsing, sandboxed previews, etc). Saving is a nice-to-have —
+    // it should never break the checklist itself if it fails.
+    function safeSet(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch (e) {
+        console.warn('Could not save to localStorage:', e);
+      }
+    }
+
     // =============================================
     // MAIN CHECKLIST ITEMS
     // These are the IDs of all toggleable items
@@ -1318,10 +1346,10 @@
     // SAVE STATE to localStorage
     // =============================================
     function saveChecklist() {
-      localStorage.setItem(KEYS.checklist, JSON.stringify(state.checklist));
+      safeSet(KEYS.checklist, JSON.stringify(state.checklist));
     }
     function saveSetup() {
-      localStorage.setItem(KEYS.setup, state.setup);
+      safeSet(KEYS.setup, state.setup);
     }
     // =============================================
     // RENDER ALL UI from state
@@ -1512,7 +1540,7 @@
       // If tapping the already-selected answer, deselect it
       const current = state.inv[state.setup];
       state.inv[state.setup] = current === answer ? null : answer;
-      localStorage.setItem('icc_inv_v1', JSON.stringify(state.inv));
+      safeSet('icc_inv_v1', JSON.stringify(state.inv));
       renderInv();
       renderProgress(); // always update progress immediately
     }
@@ -1535,7 +1563,7 @@
     // =============================================
     function setMethod(method) {
       state.method[state.setup] = method;
-      localStorage.setItem('icc_method_v1', JSON.stringify(state.method));
+      safeSet('icc_method_v1', JSON.stringify(state.method));
       renderMethod();
     }
 
@@ -1563,7 +1591,7 @@
     function gateAnswer(gateName, answer) {
       const current = state.gates[state.setup][gateName];
       state.gates[state.setup][gateName] = current === answer ? null : answer;
-      localStorage.setItem('icc_gates_v1', JSON.stringify(state.gates));
+      safeSet('icc_gates_v1', JSON.stringify(state.gates));
       renderGate(gateName);
       renderProgress();
     }
@@ -1588,7 +1616,7 @@
     function toggleSection(sectionId) {
       const isOpen = state.sectionsOpen[sectionId] !== false;
       state.sectionsOpen[sectionId] = !isOpen;
-      localStorage.setItem('icc_sections_open_v1', JSON.stringify(state.sectionsOpen));
+      safeSet('icc_sections_open_v1', JSON.stringify(state.sectionsOpen));
       renderSection(sectionId);
     }
 
@@ -1622,19 +1650,19 @@
 
       // Also clear the invalidation yes/no for the current mode
       state.inv[state.setup] = null;
-      localStorage.setItem('icc_inv_v1', JSON.stringify(state.inv));
+      safeSet('icc_inv_v1', JSON.stringify(state.inv));
 
       // Also clear the gate checks for the current mode
       GATE_IDS.forEach(g => { state.gates[state.setup][g] = null; });
-      localStorage.setItem('icc_gates_v1', JSON.stringify(state.gates));
+      safeSet('icc_gates_v1', JSON.stringify(state.gates));
 
       // Also re-open all sections
       state.sectionsOpen = { 'info': false, 'phase-1': true, 'phase-2': true, 'phase-3': true, 'phase-4': true };
-      localStorage.setItem('icc_sections_open_v1', JSON.stringify(state.sectionsOpen));
+      safeSet('icc_sections_open_v1', JSON.stringify(state.sectionsOpen));
 
       // Also reset the method toggle back to Dayli ICC for the current mode
       state.method[state.setup] = 'icc';
-      localStorage.setItem('icc_method_v1', JSON.stringify(state.method));
+      safeSet('icc_method_v1', JSON.stringify(state.method));
 
       renderAll();
     }
